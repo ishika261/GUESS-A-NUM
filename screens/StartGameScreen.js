@@ -10,6 +10,9 @@ import {
     ToastAndroid,
     Alert,
     Image,
+    Dimensions,
+    ScrollView,
+    KeyboardAvoidingView,
 } from "react-native";
 
 import Card from "../components/Card";
@@ -18,6 +21,7 @@ import Colors from "../constants/Colors";
 import NumberContainer from "../components/NumberContainer";
 import BodyText from "../components/BodyText";
 import MainButton from "../components/MainButton";
+import AppDimensions from "../constants/AppDimensions";
 
 const StartGameScreen = (props) => {
     const [enteredValue, setEnteredValue] = useState("");
@@ -74,53 +78,63 @@ const StartGameScreen = (props) => {
     }
 
     return (
-        <TouchableWithoutFeedback
-            onPress={() => {
-                Keyboard.dismiss();
-            }}
-        >
-            <View style={styles.screen}>
-                <Text style={styles.title}>Start a New Game!</Text>
-                <Image
-                    source={{
-                        uri: "https://gurmeet.net/Images/puzzles/number_guessing_game_transparent.png",
+        <ScrollView>
+            <KeyboardAvoidingView>
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        Keyboard.dismiss();
                     }}
-                    style={styles.image}
-                />
-                <Card style={styles.inputContainer}>
-                    <BodyText>Select a number</BodyText>
-                    <Input
-                        style={styles.input}
-                        keyboardType="number-pad"
-                        blurOnSubmit
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        maxLength={3}
-                        onChangeText={numberInputHandler}
-                        value={enteredValue}
-                    />
-                    <View style={styles.buttonContainer}>
-                        <MainButton
-                            onPress={resetInputHandler}
-                            style={{
-                                width: 120,
-                                backgroundColor: Colors.tertiary,
+                >
+                    <View style={styles.screen}>
+                        <Text style={styles.title}>Start a New Game!</Text>
+                        <Image
+                            source={{
+                                uri: "https://gurmeet.net/Images/puzzles/number_guessing_game_transparent.png",
                             }}
-                        >
-                            RESET
-                        </MainButton>
+                            style={styles.image}
+                        />
+                        <Card style={styles.inputContainer}>
+                            <BodyText>Select a number</BodyText>
+                            <Input
+                                style={styles.input}
+                                keyboardType="number-pad"
+                                blurOnSubmit
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                maxLength={3}
+                                onChangeText={numberInputHandler}
+                                value={enteredValue}
+                            />
+                            <View style={styles.buttonContainer}>
+                                <MainButton
+                                    onPress={resetInputHandler}
+                                    style={{
+                                        width: (2 * AppDimensions.width) / 7,
+                                        backgroundColor: Colors.tertiary,
+                                    }}
+                                >
+                                    RESET
+                                </MainButton>
 
-                        <MainButton
-                            onPress={confirmInputHandler}
-                            style={{ width: 120 }}
-                        >
-                            CONFIRM
-                        </MainButton>
+                                <MainButton
+                                    onPress={confirmInputHandler}
+                                    style={{
+                                        width:
+                                            (2 *
+                                                Dimensions.get("window")
+                                                    .width) /
+                                            7,
+                                    }}
+                                >
+                                    CONFIRM
+                                </MainButton>
+                            </View>
+                        </Card>
+                        {confirmedOutput}
                     </View>
-                </Card>
-                {confirmedOutput}
-            </View>
-        </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
+        </ScrollView>
     );
 };
 
@@ -137,8 +151,9 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        width: 300,
-        maxWidth: "80%",
+        minWidth: 300,
+        width: "80%",
+        maxWidth: "95%",
         alignItems: "center",
         marginBottom: 10,
     },

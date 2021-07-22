@@ -1,7 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, StatusBar } from "react-native";
+
 import Colors from "../constants/Colors";
 import TitleText from "./TitleText";
+import AppDimensions from "../constants/AppDimensions";
 
 const Header = (props) => {
     return (
@@ -17,7 +19,7 @@ const Header = (props) => {
 const styles = StyleSheet.create({
     main: {
         width: "100%",
-        height: 100,
+        height: AppDimensions.height * 0.12,
     },
     header: {
         position: "absolute",
