@@ -9,12 +9,15 @@ import {
     Keyboard,
     ToastAndroid,
     Alert,
+    Image,
 } from "react-native";
 
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Colors from "../constants/Colors";
 import NumberContainer from "../components/NumberContainer";
+import BodyText from "../components/BodyText";
+import MainButton from "../components/MainButton";
 
 const StartGameScreen = (props) => {
     const [enteredValue, setEnteredValue] = useState("");
@@ -34,10 +37,10 @@ const StartGameScreen = (props) => {
     const confirmInputHandler = () => {
         const chosenNumber = parseInt(enteredValue);
 
-        if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+        if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 999) {
             Alert.alert(
                 "INVALID NUMBER!",
-                "Number has to be a number between 1 and 99",
+                "Number has to be a number between 1 and 999",
                 [
                     {
                         text: "Okay",
@@ -58,13 +61,14 @@ const StartGameScreen = (props) => {
     if (confirmed) {
         confirmedOutput = (
             <Card style={styles.summaryContainer}>
-                <Text>Chosen Number:</Text>
+                <BodyText>Chosen Number:</BodyText>
                 <NumberContainer>{selectedNumber}</NumberContainer>
-                <Button
-                    title="START THE GAME"
-                    color={Colors.tertiary}
+                <MainButton
                     onPress={() => props.onStartGame(selectedNumber)}
-                />
+                    style={{ backgroundColor: Colors.tertiary }}
+                >
+                    START THE GAME
+                </MainButton>
             </Card>
         );
     }
@@ -77,33 +81,41 @@ const StartGameScreen = (props) => {
         >
             <View style={styles.screen}>
                 <Text style={styles.title}>Start a New Game!</Text>
+                <Image
+                    source={{
+                        uri: "https://gurmeet.net/Images/puzzles/number_guessing_game_transparent.png",
+                    }}
+                    style={styles.image}
+                />
                 <Card style={styles.inputContainer}>
-                    <Text>Select a number</Text>
+                    <BodyText>Select a number</BodyText>
                     <Input
                         style={styles.input}
                         keyboardType="number-pad"
                         blurOnSubmit
                         autoCapitalize="none"
                         autoCorrect={false}
-                        maxLength={2}
+                        maxLength={3}
                         onChangeText={numberInputHandler}
                         value={enteredValue}
                     />
                     <View style={styles.buttonContainer}>
-                        <View style={{ width: "45%" }}>
-                            <Button
-                                title="Reset"
-                                onPress={resetInputHandler}
-                                color={Colors.tertiary}
-                            />
-                        </View>
-                        <View style={{ width: "45%" }}>
-                            <Button
-                                title="CONFIRM"
-                                onPress={confirmInputHandler}
-                                color={Colors.primary}
-                            />
-                        </View>
+                        <MainButton
+                            onPress={resetInputHandler}
+                            style={{
+                                width: 120,
+                                backgroundColor: Colors.tertiary,
+                            }}
+                        >
+                            RESET
+                        </MainButton>
+
+                        <MainButton
+                            onPress={confirmInputHandler}
+                            style={{ width: 120 }}
+                        >
+                            CONFIRM
+                        </MainButton>
                     </View>
                 </Card>
                 {confirmedOutput}
@@ -119,8 +131,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     title: {
-        fontSize: 20,
+        fontSize: 30,
         marginVertical: 10,
+        fontFamily: "open-sans-italic",
     },
 
     inputContainer: {
@@ -138,13 +151,19 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         width: "100%",
-        justifyContent: "space-between",
+        justifyContent: "center",
         paddingHorizontal: 15,
         marginTop: 15,
     },
     input: {
         width: 50,
         textAlign: "center",
+    },
+    image: {
+        width: 220,
+        height: 220,
+        resizeMode: "cover",
+        marginBottom: 10,
     },
 });
 
